@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +7,7 @@ import { filter, merge, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmActionDialogComponent } from 'src/app/components/confirm-action-dialog/confirm-action-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -16,9 +16,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [MatFormFieldModule, MatInputModule, MatDialogModule, MatButtonModule, ReactiveFormsModule, RouterModule, MatProgressBarModule],
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, RouterModule, MatProgressBarModule],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+    private readonly destroyRef = inject(DestroyRef)
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
     private readonly dialog = inject(MatDialog);
@@ -27,7 +28,7 @@ export class LoginComponent {
     public readonly errorMessage = signal('');
     public isLoading = false;
 
-    constructor() {
+    ngOnInit(): void {
         const user = this.authService.isUserValidInStorage();
 
         if (user) {
@@ -35,7 +36,7 @@ export class LoginComponent {
         }
 
         merge(this.email.statusChanges, this.email.valueChanges)
-            .pipe(takeUntilDestroyed())
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.updateErrorMessage());
     }
 
