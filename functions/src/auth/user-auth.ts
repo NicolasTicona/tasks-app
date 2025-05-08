@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions';
 import { db } from '../init';
+import { ApiResponse, ErrorResponse } from '../interfaces/api-response.interface'
+import { User } from '../interfaces/user.interface'
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -18,22 +20,27 @@ userAuthApp.get('/userExists', async (req, res) => {
         const docRef = await db.collection('users').where('email', '==', email).get();
 
         if(docRef.empty) {
-            return res.status(404).json({
+            const errorResponse: ErrorResponse = {
                 message: 'User not found',
-            })
+                error: null
+            }
+
+            return res.status(404).json(errorResponse)
         }
 
         const snap = docRef.docs[0];
 
-        const userData = {
+        const userData: User = {
             id: snap.id,
             ...snap.data(),
         };
 
-        res.status(200).json({
-            message: 'User exists ' + email,
+        const successResponse: ApiResponse<User> = {
+            message: 'User exists',
             data: userData
-        })
+        }
+
+        res.status(200).json(successResponse)
     } catch (err) {
         functions.logger.error("Error getting user information", err);
         res.status(500).json({
