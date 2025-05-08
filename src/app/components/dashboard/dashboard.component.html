@@ -4,34 +4,32 @@
       <h1>AtomTasks</h1>
 
       <div class="actions">
-        <p>{{user.email}}</p>
+        <p>{{ user.email }}</p>
         <button mat-stroked-button (click)="logout()">
           <mat-icon>logout</mat-icon>
           Logout
         </button>
       </div>
     </div>
+    <mat-progress-bar [class.hidden]="!isLoading" mode="indeterminate"></mat-progress-bar>
   </div>
 
   <div class="dashboard-content">
     <div class="add-task-section">
       <h2>Add New Task</h2>
-      <app-add-task (taskCreated)="onTaskCreated($event)"/>
+      <app-add-task (taskCreated)="onTaskCreated($event)" />
     </div>
     <div class="tasks-container">
       <h2>Your Tasks</h2>
-
       <div class="tasks">
-        @if(tasks.length > 0) {
-            @for (task of tasks; track task.id) {
-                <app-task-card
-                    [task]="task"
-                    (taskDeleted)="onTaskDeleted($event)"
-                    (taskUpdated)="onTaskUpdated($event)"
-                ></app-task-card>
-            }
-        } @else {
-            <p>No tasks available. Please add a task.</p>
+        @if(tasks.length > 0) { @for (task of tasks; track task.id) {
+        <app-task-card
+          [task]="task"
+          (taskDeleted)="onTaskDeleted($event)"
+          (taskUpdated)="onTaskUpdated($event)"
+        ></app-task-card>
+        } } @else {
+        <p>No tasks available. Please add a task.</p>
         }
       </div>
     </div>

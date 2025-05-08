@@ -54,10 +54,18 @@ export class LoginComponent {
             return;
         }
 
-        this.loginUser(email);
+        this.loginUserAndRegister(email);
     }
 
     private loginUser(email): void {
+        this.authService.loginUser(email).subscribe({
+            next: () => {
+                this.router.navigate(['/dashboard']);
+            },
+        })
+    }
+
+    private loginUserAndRegister(email): void {
         this.authService.loginUser(email).subscribe({
             next: () => {
                 this.router.navigate(['/dashboard']);
@@ -74,7 +82,7 @@ export class LoginComponent {
         const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
             data: {
                 title: 'Register User',
-                text: 'This email is not registered yet. Do you want to register this email ?'
+                text: `${email} is not registered yet. Do you want to register this email ?`
             }
         })
 
