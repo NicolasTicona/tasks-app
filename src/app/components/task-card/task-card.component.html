@@ -1,0 +1,29 @@
+<div class="task" [class.completed]="task.completed">
+  <div class="information">
+    <div class="title">
+      <mat-checkbox
+        [checked]="task.completed"
+        (change)="toggleComplete()"
+      ></mat-checkbox>
+      <span>{{ task.title }}</span>
+    </div>
+
+    <p class="description">
+      {{ task.description }}
+    </p>
+
+    <span class="created">{{ task.createdAt | date : "short" }}</span>
+  </div>
+  <div class="actions">
+    <button mat-icon-button aria-label="Edit" (click)="openEditTaskDialog()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      aria-label="Delete"
+      (click)="openConfirmationDialog()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>

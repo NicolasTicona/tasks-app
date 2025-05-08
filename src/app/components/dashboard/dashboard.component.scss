@@ -1,0 +1,62 @@
+@use 'colors' as *;
+
+.dashboard-layout {
+    background-color: #f7f7f7;
+    height: 100vh;
+}
+
+.header {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    width: 1200px;
+    margin: auto;
+
+    h1 {
+        font-size: 2.5rem;
+        color: $primary;
+        font-weight: bold;
+        margin:  0;
+    }
+
+    .actions {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+
+        p {
+            margin: 0;
+            color: $text-normal;
+        }
+    }
+}
+
+.dashboard-content {
+    max-width: 1200px;
+    padding: 30px 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+}
+
+.add-task-section {
+    background-color: rgba($color: $primary, $alpha: 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    align-self: flex-start;
+}
+
+.tasks-container .tasks{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}

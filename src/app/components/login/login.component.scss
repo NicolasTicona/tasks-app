@@ -1,0 +1,62 @@
+@use "colors" as *;
+
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgba(155, 135, 245, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(155, 135, 245, 0.36) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.login-container {
+  width: 600px;
+
+  h1 {
+    color: $primary;
+    margin-bottom: 18px;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  & > p {
+    color: $text-normal;
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+}
+
+.login-form {
+  width: 80%;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px -4px rgba(0, 0, 0, 0.2);
+  padding: 30px 25px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  h2 {
+    color: $text-dark;
+    font-size: 1.5rem;
+  }
+
+  p {
+    color: $text-normal;
+  }
+
+  .email-field {
+    margin-top: 20px;
+  }
+
+  button {
+    padding: 20px 0;
+  }
+}

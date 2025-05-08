@@ -1,0 +1,12 @@
+form {
+    display: flex;
+    flex-direction: column;
+
+    button {
+        padding: 20px 10px;
+    }
+
+    textarea {
+        resize: none;
+    }
+}

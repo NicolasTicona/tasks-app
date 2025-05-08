@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Edit Task</h2>
+<mat-dialog-content>
+  <form [formGroup]="formGroup">
+    <mat-form-field appearance="fill">
+      <input matInput placeholder="Task Title" formControlName="title" />
+      @if(formGroup.get('title')?.errors) {
+      <mat-error>Title is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <textarea
+        matInput
+        placeholder="Description (optional)"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="actions">
+    <button mat-stroked-button (click)="close()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="editTask()">Update</button>
+  </div>
+</mat-dialog-actions>

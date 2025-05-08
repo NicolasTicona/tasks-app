@@ -1,0 +1,16 @@
+<form [formGroup]="formGroup">
+    <mat-form-field appearance="fill">
+      <input matInput placeholder="Task Title" formControlName="title" />
+        @if(formGroup.get('title')?.errors) {
+            <mat-error>Title is required</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <textarea matInput placeholder="Description (optional)" rows="6" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button [disabled]="formGroup.invalid" color="primary" (click)="addTask($event)">
+      <mat-icon>add</mat-icon>Add Task
+    </button>
+  </form>

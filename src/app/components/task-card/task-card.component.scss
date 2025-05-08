@@ -1,0 +1,48 @@
+@use 'colors' as *;
+
+.task {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    gap: 20px;
+
+    .information {
+        width: 80%;
+        .title {
+            display: flex;
+            align-items: center;
+            
+            span{
+                font-size: 1.5rem;
+            }
+        }
+    
+        .description {
+            color: $text-normal
+        }
+    
+        .created {
+            color: $text-normal;
+            font-size: 0.8rem;
+        }
+    }
+    
+    .actions {
+        width: 20%;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
+
+.task.completed {
+    opacity: 0.5;
+
+    & .information .title span {
+        text-decoration: line-through;
+    }
+}
