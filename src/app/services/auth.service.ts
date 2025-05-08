@@ -18,7 +18,7 @@ export class AuthService {
     public loginUser(email: string): Observable<ApiResponse<User>> {
         const params = new HttpParams().set('email', email);
 
-        return this.http.get<any>(`${this.baseUrl}/userExists`, { params }).pipe(tap(({ data }) => {
+        return this.http.get<ApiResponse<User>>(`${this.baseUrl}/userExists`, { params }).pipe(tap(({ data }) => {
             this.isLoggedIn = true;
             if (data) {
                 this.userLoggedIn = data;

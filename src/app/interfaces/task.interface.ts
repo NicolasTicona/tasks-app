@@ -1,9 +1,9 @@
 export interface Task {
-    id: number;
+    id: string;
     title: string;
     description: string;
     completed: boolean;
-    createdAt: Date;
+    createdAt: number;
 }
 
 export interface NewTaskPayload {
@@ -12,7 +12,7 @@ export interface NewTaskPayload {
 }
 
 export interface EditTaskPayload {
-    id: number;
+    id: string;
     title: string;
     description: string;
     completed: boolean;

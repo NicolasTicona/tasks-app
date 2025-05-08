@@ -10,7 +10,8 @@
     "test": "ng test",
     "firebase:emulators": "firebase emulators:start --only firestore,functions",
     "deploy": "firebase deploy",
-    "deploy:hosting": "firebase deploy --only hosting"
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:functions": "firebase deploy --only functions"
   },
   "private": true,
   "dependencies": {

@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
 })
 export class TaskCardComponent {
     @Input() public task: Task;
-    @Output() taskDeleted = new EventEmitter<number>();
+    @Output() taskDeleted = new EventEmitter<string>();
     @Output() taskUpdated = new EventEmitter<EditTaskPayload>();
     readonly dialog = inject(MatDialog);
 

@@ -23,11 +23,11 @@ export class TasksService {
         });
     }
 
-    editTask(userId: string, task: EditTaskPayload): Observable<any> {
-        return this.http.put<ApiResponse<Task>>(`${this.baseUrl}/${userId}/edit/${task.id}`, task);
+    editTask(userId: string, task: EditTaskPayload): Observable<ApiResponse<{ id: string }>> {
+        return this.http.put<ApiResponse<{ id: string }>>(`${this.baseUrl}/${userId}/edit/${task.id}`, task);
     }
 
-    deleteTask(userId: string, taskId: number): Observable<any> {
-        return this.http.delete<ApiResponse<Task>>(`${this.baseUrl}/${userId}/delete/${taskId}`);
+    deleteTask(userId: string, taskId: string): Observable<ApiResponse<{ id: string }>> {
+        return this.http.delete<ApiResponse<{ id: string }>>(`${this.baseUrl}/${userId}/delete/${taskId}`);
     }
 }

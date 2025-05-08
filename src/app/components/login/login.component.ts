@@ -18,12 +18,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     imports: [MatFormFieldModule, MatInputModule, MatDialogModule, MatButtonModule, ReactiveFormsModule, RouterModule],
 })
 export class LoginComponent {
-    public readonly email = new FormControl('', [Validators.required, Validators.email]);
-    public readonly errorMessage = signal('');
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
     private readonly dialog = inject(MatDialog);
     private readonly snackbar = inject(MatSnackBar)
+    public readonly email = new FormControl('', [Validators.required, Validators.email]);
+    public readonly errorMessage = signal('');
+    public isLoading = false;
 
     constructor() {
         const user = this.authService.isUserValidInStorage();
@@ -62,17 +63,29 @@ export class LoginComponent {
             next: () => {
                 this.router.navigate(['/dashboard']);
             },
+            error: (err) => {
+                if (err.status !== 404 && err.error.message) {
+                    this.showError(err.error.message);
+                }
+            }
         })
     }
 
     private loginUserAndRegister(email): void {
+        this.isLoading = true;
+
         this.authService.loginUser(email).subscribe({
             next: () => {
+                this.isLoading = false;
                 this.router.navigate(['/dashboard']);
             },
             error: (err) => {
+                this.isLoading = false;
+
                 if (err.status === 404) {
                     this.openConfirmRegisterDialog(email);
+                } else if (err.error.message) {
+                    this.showError(err.error.message);
                 }
             }
         })
@@ -99,8 +112,17 @@ export class LoginComponent {
                     this.router.navigate(['/dashboard']);
                 },
                 error: (err) => {
-                    this.snackbar.open(err.message)
+                    if (err.error.message) {
+                        this.showError(err.error.message);
+                    }
                 }
             })
+    }
+
+    private showError(message: string): void {
+        this.snackbar.open(message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'right'
+        })
     }
 }

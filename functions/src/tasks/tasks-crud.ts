@@ -1,8 +1,9 @@
 import * as functions from 'firebase-functions';
 import { db } from '../init';
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser'
+import cors from 'cors';
+import { Task } from '../interfaces/task.interface';
 
 export const tasksCrudApp = express();
 
@@ -12,12 +13,12 @@ tasksCrudApp.use(cors({
 }));
 
 
-tasksCrudApp.get('/:userId', async (req, res) => {
+tasksCrudApp.get('/:userId', async (req: Request, res: Response) => {
     try {
         const { userId } = req.params;
 
         const snap = await db.collection(`users/${userId}/tasks`).orderBy('createdAt').get();
-        let tasks: any[] = [];
+        let tasks: Task[] = [];
 
         if (!snap.empty) {
             snap.forEach(doc => {
@@ -31,20 +32,20 @@ tasksCrudApp.get('/:userId', async (req, res) => {
             })
         }
 
-        functions.logger.debug(tasks)
-
-        res.status(200).json({
+        return res.status(200).json({
             message: '',
             data: tasks
         })
     } catch (err) {
-        res.status(500).json({
-            message: err
+        functions.logger.error("Error getting user tasks information", err);
+        return res.status(500).json({
+            error: err,
+            message: 'Error getting user tasks information'
         })
     }
 })
 
-tasksCrudApp.post('/:userId/add', async (req, res) => {
+tasksCrudApp.post('/:userId/add', async (req: Request, res: Response) => {
     try {
         const { title, description = '' } = req.body;
         const { userId } = req.params;
@@ -64,7 +65,7 @@ tasksCrudApp.post('/:userId/add', async (req, res) => {
 
         const taskRef = await db.collection(`users/${userId}/tasks`).add(payload);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Task created successfully',
             data: {
                 id: taskRef.id,
@@ -72,15 +73,15 @@ tasksCrudApp.post('/:userId/add', async (req, res) => {
             }
         });
     } catch (err) {
-        functions.logger.error(err)
-
-        res.status(500).json({
-            message: err
+        functions.logger.error("Error creating task", err);
+        return res.status(500).json({
+            message: 'Error creating task',
+            error: err
         })
     }
 })
 
-tasksCrudApp.put('/:userId/edit/:taskId', async (req, res) => {
+tasksCrudApp.put('/:userId/edit/:taskId', async (req: Request, res: Response) => {
     try {
         const task = req.body;
         const { userId, taskId } = req.params;
@@ -99,18 +100,18 @@ tasksCrudApp.put('/:userId/edit/:taskId', async (req, res) => {
             completed: task.completed || false
         });
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Task updated successfully',
             data: {
-                id: taskId,
-                ...task
+                id: taskId
             }
         });
 
     } catch (err) {
-        functions.logger.error(err);
-        res.status(500).json({
-            message: err
+        functions.logger.error('Error updating task', err);
+        return res.status(500).json({
+            message: 'Error updating task',
+            error: err
         })
     }
 })
@@ -127,7 +128,7 @@ tasksCrudApp.delete('/:userId/delete/:taskId', async (req, res) => {
 
         await db.collection(`users/${userId}/tasks`).doc(taskId).delete();
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Task deleted sucessfully',
             data: {
                 id: taskId
@@ -135,9 +136,10 @@ tasksCrudApp.delete('/:userId/delete/:taskId', async (req, res) => {
         })
 
     } catch (err) {
-        functions.logger.error(err);
-        res.status(500).json({
-            messsage: err
+        functions.logger.error('Error deleting task', err);
+        return res.status(500).json({
+            messsage: 'Error deleting task',
+            error: err
         })
     }
 })

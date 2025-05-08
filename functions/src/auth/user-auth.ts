@@ -1,10 +1,9 @@
 import * as functions from 'firebase-functions';
 import { db } from '../init';
-import { ApiResponse, ErrorResponse } from '../interfaces/api-response.interface'
 import { User } from '../interfaces/user.interface'
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser'
+import cors from 'cors';
 
 export const userAuthApp = express();
 
@@ -13,19 +12,17 @@ userAuthApp.use(cors({
     origin: ['http://localhost:4200', 'https://fir-tasks-app.web.app'],
 }));
 
-userAuthApp.get('/userExists', async (req, res) => {
+userAuthApp.get('/userExists', async (req: Request, res: Response) => {
     try {
         const { email } = req.query;
 
         const docRef = await db.collection('users').where('email', '==', email).get();
 
-        if(docRef.empty) {
-            const errorResponse: ErrorResponse = {
+        if (docRef.empty) {
+            return res.status(404).json({
                 message: 'User not found',
                 error: null
-            }
-
-            return res.status(404).json(errorResponse)
+            })
         }
 
         const snap = docRef.docs[0];
@@ -35,16 +32,15 @@ userAuthApp.get('/userExists', async (req, res) => {
             ...snap.data(),
         };
 
-        const successResponse: ApiResponse<User> = {
+        return res.status(200).json({
             message: 'User exists',
             data: userData
-        }
-
-        res.status(200).json(successResponse)
+        })
     } catch (err) {
         functions.logger.error("Error getting user information", err);
-        res.status(500).json({
-            message: 'Error getting user information'
+        return res.status(500).json({
+            message: 'Error getting user information',
+            error: err
         })
     }
 });
@@ -55,9 +51,10 @@ userAuthApp.post('/register', async (req, res) => {
 
         const docRef = await db.collection('users').where('email', '==', email).get();
 
-        if(!docRef.empty) {
+        if (!docRef.empty) {
             return res.status(403).json({
                 message: 'User already exists',
+                error: null
             })
         }
 
@@ -66,19 +63,20 @@ userAuthApp.post('/register', async (req, res) => {
             createdAt: Date.now(),
         }
 
-        const add = await db.collection('users').add(payload);
+        const snap = await db.collection('users').add(payload);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'User registered successfully ' + email,
             data: {
-                id: add.id,
+                id: snap.id,
                 ...payload
             }
         })
     } catch (err) {
         functions.logger.error("Error registering user", err);
-        res.status(500).json({
-            message: 'Error registering user'
+        return res.status(500).json({
+            message: 'Error registering user',
+            error: err,
         })
     }
 })
