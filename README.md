@@ -1,59 +1,56 @@
 # TasksApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+- Project solution for Atom Challenge. It's using Angular 19, Typescript, Express, Firestore, Hosting and Firebase Cloud Functions.
+- It has configured a github action to build and deploy the angular dist folder when there is a push to main branch.
+
+### Deployed here
+-> https://fir-tasks-app.web.app/
+
+## API
+
+The API is hosted in two different cloud functions, one for user authentication endpoints and the other for task crud operations.
+
+Operations:
+- Obtener la lista de todas las tareas.
+- Agregar una nueva tarea.
+- Actualizar los datos de una tarea existente.
+- Eliminar una tarea existente.
+- Busca el usuario si ha sido creado
+- Agrega un nuevo usuario
+
 
 ## Development server
+
+Use your firebase credentials to run this project, run:
+
+```bash
+firebase login
+```
+
+it might be necessary to run previously:
+
+```bash
+npm i -g firebase-tools
+```
 
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+To run locally firebase emulators, move to functions folder and run:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
 ```bash
-ng generate component component-name
+npm ci
+npm run build
+
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Move back to root folder and run
+
 
 ```bash
-ng generate --help
+npm run firebase:emulators
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
