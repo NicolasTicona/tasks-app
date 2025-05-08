@@ -33,6 +33,7 @@
 }
 
 .login-form {
+  position: relative;
   width: 80%;
   margin: auto;
   background-color: #fff;
@@ -59,4 +60,14 @@
   button {
     padding: 20px 0;
   }
+}
+
+.hidden {
+    opacity: 0;
+}
+
+mat-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
 }

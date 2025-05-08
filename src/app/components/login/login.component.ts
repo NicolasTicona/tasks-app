@@ -10,12 +10,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmActionDialogComponent } from 'src/app/components/confirm-action-dialog/confirm-action-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [MatFormFieldModule, MatInputModule, MatDialogModule, MatButtonModule, ReactiveFormsModule, RouterModule],
+    imports: [MatFormFieldModule, MatInputModule, MatDialogModule, MatButtonModule, ReactiveFormsModule, RouterModule, MatProgressBarModule],
 })
 export class LoginComponent {
     private readonly authService = inject(AuthService);
@@ -59,11 +60,14 @@ export class LoginComponent {
     }
 
     private loginUser(email): void {
+        this.isLoading = true;
         this.authService.loginUser(email).subscribe({
             next: () => {
+                this.isLoading = false;
                 this.router.navigate(['/dashboard']);
             },
             error: (err) => {
+                this.isLoading = false;
                 if (err.status !== 404 && err.error.message) {
                     this.showError(err.error.message);
                 }
@@ -73,7 +77,6 @@ export class LoginComponent {
 
     private loginUserAndRegister(email): void {
         this.isLoading = true;
-
         this.authService.loginUser(email).subscribe({
             next: () => {
                 this.isLoading = false;
@@ -81,7 +84,6 @@ export class LoginComponent {
             },
             error: (err) => {
                 this.isLoading = false;
-
                 if (err.status === 404) {
                     this.openConfirmRegisterDialog(email);
                 } else if (err.error.message) {

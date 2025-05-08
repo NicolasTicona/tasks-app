@@ -4,16 +4,29 @@
     <p>Organize your tasks with ease</p>
 
     <div class="login-form">
+      <mat-progress-bar [class.hidden]="!isLoading" mode="indeterminate"></mat-progress-bar>
       <h2>Welcome to AtomTasks</h2>
       <p>Enter your email to continue</p>
 
       <mat-form-field appearance="outline" class="email-field">
-        <input matInput placeholder="nicolas.ticona@gmail.com" (blur)="updateErrorMessage()" [formControl]="email" />
+        <input
+          matInput
+          placeholder="nicolas.ticona@gmail.com"
+          (blur)="updateErrorMessage()"
+          [formControl]="email"
+        />
         @if (email.invalid) {
-            <mat-error>{{errorMessage()}}</mat-error>
+        <mat-error>{{ errorMessage() }}</mat-error>
         }
       </mat-form-field>
-      <button mat-flat-button color="primary" [disabled]="email.invalid" (click)="submit()">Continue</button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="email.invalid || isLoading"
+        (click)="submit()"
+      >
+        Continue
+      </button>
     </div>
   </div>
 </div>
